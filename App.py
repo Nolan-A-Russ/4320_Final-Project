@@ -44,3 +44,20 @@ def login_admin(password):
 
 def logout_admin():
     session.pop('admin_logged_in', None)
+
+@app.route('/')
+def index():
+    reservations = get_all_reservations()
+    return render_template('index.html', reservations=reservations)
+
+@app.route('/reserve', methods=['GET', 'POST'])
+def reserve():
+    if request.method == 'POST':
+        passenger_name = request.form['passenger_name']
+        seat_row = request.form['seat_row']
+        seat_column = request.form['seat_column']
+        e_ticket_number = request.form['e_ticket_number']
+        execute_query("INSERT INTO reservations (passengerName, seatRow, seatColumn, eTicketNumber) VALUES (?, ?, ?, ?)",
+                      (passenger_name, seat_row, seat_column, e_ticket_number))
+        return redirect(url_for('index'))
+    return render_template('reserve.html')
