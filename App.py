@@ -61,3 +61,34 @@ def reserve():
                       (passenger_name, seat_row, seat_column, e_ticket_number))
         return redirect(url_for('index'))
     return render_template('reserve.html')
+
+@app.route('/cancel/<int:reservation_id>')
+def cancel(reservation_id):
+    execute_query("DELETE FROM reservations WHERE id=?", (reservation_id,))
+    return redirect(url_for('index'))
+
+@app.route('/admin/login', methods=['GET', 'POST'])
+def admin_login():
+    if request.method == 'POST':
+        password = request.form['password']
+        if login_admin(password):
+            return redirect(url_for('admin_portal'))
+        else:
+            return render_template('admin_login.html', error="Invalid password")
+    return render_template('admin_login.html')
+
+@app.route('/admin/logout')
+def admin_logout():
+    logout_admin()
+    return redirect(url_for('admin_login'))
+
+@app.route('/admin/portal')
+def admin_portal():
+    if not is_admin_logged_in():
+        return redirect(url_for('admin_login'))
+    reservations = get_all_reservations()
+    total_sales_count = total_sales()
+    return render_template('admin_portal.html', reservations=reservations, total_sales_count=total_sales_count)
+
+if __name__ == '__main__':
+    app.run(debug=True)
