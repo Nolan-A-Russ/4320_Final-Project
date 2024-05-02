@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Portal</title>
+</head>
+<body>
+    <h1>Welcome to Admin Portal</h1>
+    <h2>Total Sales: {{ total_sales_count }}</h2>
+    <h2>Current Reservations:</h2>
+    <ul>
+        {% for reservation in reservations %}
+            <li>{{ reservation[1] }} - Seat: {{ reservation[2] }}-{{ reservation[3] }} - eTicket: {{ reservation[4] }}</li>
+        {% endfor %}
+    </ul>
+    <a href="{{ url_for('admin_logout') }}">Logout</a>
+</body>
+</html>
