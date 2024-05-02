@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Make a Reservation</title>
+</head>
+<body>
+    <h1>Make a Reservation</h1>
+    <form method="POST" action="{{ url_for('reserve') }}">
+        <label for="passenger_name">Passenger Name:</label><br>
+        <input type="text" id="passenger_name" name="passenger_name"><br>
+        <label for="seat_row">Seat Row:</label><br>
+        <input type="number" id="seat_row" name="seat_row" min="1" max="12"><br>
+        <label for="seat_column">Seat Column:</label><br>
+        <input type="number" id="seat_column" name="seat_column" min="1" max="4"><br>
+        <label for="e_ticket_number">eTicket Number:</label><br>
+        <input type="text" id="e_ticket_number" name="e_ticket_number"><br><br>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
