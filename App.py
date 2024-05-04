@@ -45,6 +45,28 @@ def login_admin(password):
 def logout_admin():
     session.pop('admin_logged_in', None)
 
+def seating_info():
+    conn = create_connection()
+
+    try: 
+        cur = conn.cursor()
+        cursor.execute("SELECT * FROM reservations")
+        rows = cursor.fetchall()
+
+        seating_inf = []
+        for row in rows:
+
+            passenger_name = request.form['passengerName']
+            seat_row = request.form['seat_row']
+            seat_column = request.form['seat_column']
+            e_ticket_number = request.form['e_ticket_number']
+            execute_query("INSERT INTO reservations (passenger_name, seat_row, seat_column, e_ticket_number) VALUES (?, ?, ?, ?)",
+            (passenger_name, seat_row, seat_column, e_ticket_number))
+
+        return seating_inf
+    finally:
+        conn.close()
+
 @app.route('/')
 def index():
     reservations = get_all_reservations()
@@ -52,15 +74,19 @@ def index():
 
 @app.route('/reserve', methods=['GET', 'POST'])
 def reserve():
+    seating = seating_info()
+    
     if request.method == 'POST':
         passenger_name = request.form['passenger_name']
         seat_row = request.form['seat_row']
         seat_column = request.form['seat_column']
         e_ticket_number = request.form['e_ticket_number']
-        execute_query("INSERT INTO reservations (passengerName, seatRow, seatColumn, eTicketNumber) VALUES (?, ?, ?, ?)",
-                      (passenger_name, seat_row, seat_column, e_ticket_number))
+        execute_query("INSERT INTO reservations (passengerName, seatRow, seatColumn, eTicketNumber) VALUES (?, ?, ?, ?)",         
+                        (passenger_name, seat_row, seat_column, e_ticket_number))    
         return redirect(url_for('index'))
-    return render_template('reserve.html')
+    else:
+        err = "This seat is taken. Please choose another seat."
+        return render_template('reserve.html')
 
 @app.route('/cancel/<int:reservation_id>')
 def cancel(reservation_id):
@@ -88,7 +114,8 @@ def admin_portal():
         return redirect(url_for('admin_login'))
     reservations = get_all_reservations()
     total_sales_count = total_sales()
-    return render_template('admin_portal.html', reservations=reservations, total_sales_count=total_sales_count)
+    seating = seating_info()
+    return render_template('admin_portal.html', reservations=reservations, total_sales_count=total_sales_count, seating=seating)
 
 if __name__ == '__main__':
     app.run(debug=True)
