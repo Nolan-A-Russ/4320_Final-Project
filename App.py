@@ -106,8 +106,9 @@ def cancel(reservation_id):
 @app.route('/admin/login', methods=['GET', 'POST'])
 def admin_login():
     if request.method == 'POST':
+        username = request.form['username']
         password = request.form['password']
-        if login_admin(password):
+        if login_admin(password) & login_admin(username) == True:
             return redirect(url_for('admin_portal'))
         else:
             return render_template('admin_login.html', error="Invalid password")
