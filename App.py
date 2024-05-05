@@ -67,6 +67,10 @@ def seating_info():
     finally:
         conn.close()
 
+def get_cost_matrix():
+    cost_matrix = [[100, 75, 50, 100] for i in range(12)]
+    return cost_matrix
+
 @app.route('/')
 def index():
     reservations = get_all_reservations()
