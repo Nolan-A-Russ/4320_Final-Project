@@ -6,6 +6,12 @@
     <title>Make a Reservation</title>
 </head>
 <body>
+    <div class="navbar">
+        <a href="/">Home</a>
+        <a href="/product-reports">Product Reports</a>
+        <a href="/customers-reports">Customer Reports</a>
+        <a href="/employees-reports">Employee Reports</a>
+    </div>
     <h1>Make a Reservation</h1>
     <form method="POST" action="{{ url_for('reserve') }}">
         <label for="passenger_name">Passenger Name:</label><br>
