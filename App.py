@@ -36,6 +36,12 @@ def total_sales():
 def is_admin_logged_in():
     return session.get('admin_logged_in', False)
 
+def login_admin(username):
+    if username == "admin_username":
+        return True
+    else: 
+        return False
+
 def login_admin(password):
     if password == "admin_password":
         session['admin_logged_in'] = True
